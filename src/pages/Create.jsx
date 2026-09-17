@@ -5,7 +5,7 @@ import Container from '@mui/material/Container'
 import AcUnitIcon from '@mui/icons-material/AcUnit';
 import SendIcon from '@mui/icons-material/Send';
 import { makeStyles } from '@mui/styles';
-import { TextField } from '@mui/material';
+import { FormControl, FormControlLabel, FormLabel, Radio,   RadioGroup, TextField } from '@mui/material';
 
 
 const useStyle = makeStyles({
@@ -16,6 +16,11 @@ const useStyle = makeStyles({
   title : {
     textDecoration: 'underline', 
     marginBottom: 20
+  },
+  field: {
+    marginTop: 20, 
+    marginBottom: 20, 
+    display: 'block'
   }
 })
 
@@ -25,6 +30,9 @@ export default function Create() {
   const classes = useStyle()
   const [title, setTitle] = useState("")
   const [titleError, setTitleError] = useState(false)
+  const [category, setCategory] = useState("todos")
+
+
   const handlSubmit = (e) => {
     e.preventDefault()
     setTitleError(false)
@@ -56,7 +64,18 @@ export default function Create() {
           required
           error={titleError}
         />
-        <Button
+
+        <FormControl className={classes.field}>
+          <FormLabel color="secondary">Note Category</FormLabel>
+          <RadioGroup  value={category} onChange={(e) => setCategory(e.target.value)}>
+            <FormControlLabel value="money" control={<Radio />} label="Money" />
+            <FormControlLabel value="todos" control={<Radio/>} label="Todos" />
+            <FormControlLabel value="reminders" control={<Radio />} label="Reminders" />
+            <FormControlLabel value="work" control={<Radio />} label="Work" />
+          </RadioGroup>
+        </FormControl>
+
+      <Button
         className={classes.btn}
         onClick={() => console.log('Button clicked')}
         type="submit"
