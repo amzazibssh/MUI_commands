@@ -1,8 +1,11 @@
 import React from 'react'
 import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import Container from '@mui/material/Container'
+
 export default function Create() {
   return (
-    <div>
+    <Container>
       <Typography
         variant="h6"
         color="textSecondary"
@@ -10,6 +13,15 @@ export default function Create() {
       >
         Create page
       </Typography>
-    </div>
+
+      <Button
+        onClick={() => console.log('Button clicked')}
+        type="submit"
+        color="primary"
+        variant="contained" 
+      >
+        submit
+      </Button>
+    </Container>
   )
 }
