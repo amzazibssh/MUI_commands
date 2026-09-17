@@ -10,7 +10,7 @@ import { makeStyles } from '@mui/styles';
 const useStyle = makeStyles({
   btn : {
     fontSize: 60, 
-    backgroundColor : 'red !important'
+    backgroundColor : 'red'
   },
   title : {
     textDecoration: 'underline', 
@@ -29,7 +29,7 @@ export default function Create() {
       <Typography
         className={classes.title}
         variant="h6"
-        color="textSecondary"
+        color="secondary"
         noWrap
       >
         Create page
