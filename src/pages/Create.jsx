@@ -6,89 +6,99 @@ import AcUnitIcon from '@mui/icons-material/AcUnit';
 import SendIcon from '@mui/icons-material/Send';
 import { makeStyles } from '@mui/styles';
 import { FormControl, FormControlLabel, FormLabel, Radio,   RadioGroup, TextField } from '@mui/material';
-
-
-const useStyle = makeStyles({
-  btn : {
-    fontSize: 60, 
-    backgroundColor : 'red'
-  },
-  title : {
-    textDecoration: 'underline', 
-    marginBottom: 20
-  },
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight'
+const useStyles = makeStyles({
   field: {
-    marginTop: 20, 
-    marginBottom: 20, 
+    marginTop: 20,
+    marginBottom: 20,
     display: 'block'
   }
 })
 
-
 export default function Create() {
-
-  const classes = useStyle()
-  const [title, setTitle] = useState("")
+  const classes = useStyles()
+  const [title, setTitle] = useState('')
+  const [details, setDetails] = useState('')
   const [titleError, setTitleError] = useState(false)
-  const [category, setCategory] = useState("todos")
+  const [detailsError, setDetailsError] = useState(false)
+  const [category, setCategory] = useState('money')
 
-
-  const handlSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault()
     setTitleError(false)
-    if (title == ''){
+    setDetailsError(false)
+
+    if (title == '') {
       setTitleError(true)
     }
-    if(title){
-      console.log(title)
+    if (details == '') {
+      setDetailsError(true)
     }
+    if (title && details) {
+      fetch('http://localhost:8001/notes', {
+        method: 'POST',
+        headers: {"Content-type": "application/json"},
+        body: JSON.stringify({ title, details, category })
+      }).then(() => console.log('new note added'))
+    } 
   }
-  return (
-    <Container>
-      <Typography
-        className={classes.title}
-        variant="h6"
-        color="secondary"
-        noWrap
-      >
-        Create page
-      </Typography>
 
-      <form noValidate autoComplete='off' onSubmit={handlSubmit}>
-        <TextField
+  return (
+    <Container size="sm">
+      <Typography
+        variant="h6" 
+        color="textSecondary"
+        component="h2"
+        gutterBottom
+      >
+        Create a New Note
+      </Typography>
+      
+      <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+        <TextField className={classes.field}
           onChange={(e) => setTitle(e.target.value)}
-          label="title"
-          variant='filled'
+          label="Note Title" 
+          variant="outlined" 
+          color="secondary" 
           fullWidth
-          color="secondary"
           required
           error={titleError}
         />
+        <TextField className={classes.field}
+          onChange={(e) => setDetails(e.target.value)}
+          label="Details"
+          variant="outlined"
+          color="secondary"
+          multiline
+          rows={4}
+          fullWidth
+          required
+          error={detailsError}
+        />
+
+        {/* <Radio value="hello" />
+        <Radio value="goodbye" /> */}
 
         <FormControl className={classes.field}>
-          <FormLabel color="secondary">Note Category</FormLabel>
-          <RadioGroup  value={category} onChange={(e) => setCategory(e.target.value)}>
+          <FormLabel>Note Category</FormLabel>
+          <RadioGroup value={category} onChange={(e) => setCategory(e.target.value)}>
             <FormControlLabel value="money" control={<Radio />} label="Money" />
-            <FormControlLabel value="todos" control={<Radio/>} label="Todos" />
+            <FormControlLabel value="todos" control={<Radio />} label="Todos" />
             <FormControlLabel value="reminders" control={<Radio />} label="Reminders" />
             <FormControlLabel value="work" control={<Radio />} label="Work" />
           </RadioGroup>
         </FormControl>
 
-      <Button
-        className={classes.btn}
-        onClick={() => console.log('Button clicked')}
-        type="submit"
-        variant="contained" 
-        endIcon={<SendIcon color="secondary" />}
-      >
-        submit
-      </Button>
+        <Button
+          type="submit" 
+          color="secondary" 
+          variant="contained"
+          endIcon={<KeyboardArrowRightIcon />}>
+          Submit
+        </Button>
       </form>
-      
-      <br/>
 
-      <AcUnitIcon color="error" fontSize="large"/>
+      
     </Container>
   )
 }
